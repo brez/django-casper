@@ -69,8 +69,9 @@ class CasperTestCase(LiveServerTestCase):
 
         p = Popen(cmd, stdout=PIPE, stderr=PIPE,
             cwd=os.path.dirname(test_filename))  # flake8: noqa
+
         out, err = p.communicate()
-        if p.returncode != 0:
-            sys.stdout.write(out)
+        sys.stdout.write(out)
+        if err:
             sys.stderr.write(err)
-        return p.returncode == 0
+        return out.find('FAIL') == -1
